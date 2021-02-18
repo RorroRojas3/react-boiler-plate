@@ -1,16 +1,27 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
+import { Button } from "react-bootstrap";
 import { DemoContext } from "../../context/demoContext/demoContext";
+import SignInOutModal from "../signInOutModal/signInOutModal";
 
 const SignInOutButton = () => {
-  const [count] = useContext(DemoContext);
-  let userSignedIn;
-  if (count > 0) {
-    userSignedIn = "Sign Out";
-  } else {
-    userSignedIn = "Sing In";
-  }
+  const enableSignIn = () => {
+    if (count === 0) {
+      setModalShow(true);
+    }
+  };
 
-  return <div>{userSignedIn}</div>;
+  const [modalShow, setModalShow] = useState(false);
+  const [count] = useContext(DemoContext);
+  let isUserAuthenticated = count === 0 ? "Sign In" : "Sign Out";
+
+  return (
+    <div>
+      <Button variant="dark" onClick={enableSignIn}>
+        {isUserAuthenticated}
+      </Button>
+      <SignInOutModal show={modalShow} onHide={() => setModalShow(false)} />
+    </div>
+  );
 };
 
 export default SignInOutButton;
